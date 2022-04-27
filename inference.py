@@ -160,6 +160,8 @@ def main(args):
     pixel_values = transform(image).unsqueeze(0)
     output = model(pixel_values)
 
+    print("Output:", output.keys())
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Conditional DETR inference script', parents=[get_args_parser()])
