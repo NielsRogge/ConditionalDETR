@@ -215,9 +215,9 @@ def main(args):
     pixel_values = transform(image).unsqueeze(0)
     outputs = model(pixel_values)
 
-    # keep only predictions with 0.9+ confidence
+    # keep only predictions with 0.7+ confidence
     probas = outputs['pred_logits'].softmax(-1)[0, :, :-1]
-    keep = probas.max(-1).values > 0.9
+    keep = probas.max(-1).values > 0.7
 
     # convert boxes from [0; 1] to image scales
     bboxes_scaled = rescale_bboxes(outputs['pred_boxes'][0, keep], image.size)
