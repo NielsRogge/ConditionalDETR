@@ -24,6 +24,11 @@ from datasets import build_dataset, get_coco_api_from_dataset
 from engine import evaluate, train_one_epoch
 from models import build_model
 
+import torchvision.transforms as T
+
+from PIL import Image
+import requests
+
 
 def get_args_parser():
     parser = argparse.ArgumentParser('Set transformer detector', add_help=False)
@@ -141,8 +146,18 @@ def main(args):
             checkpoint = torch.load(args.resume, map_location='cpu')
         model.load_state_dict(checkpoint['model'])
 
-    # forward pass
-    pixel_values = torch.randn(1,3,224,224)
+    # forward pass on cats image
+    url = 'http://images.cocodataset.org/val2017/000000039769.jpg'
+    image = Image.open(requests.get(url, stream=True).raw)
+
+    # standard PyTorch mean-std input image normalization
+    transform = T.Compose([
+        T.Resize(800),
+        T.ToTensor(),
+        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+
+    pixel_values = transform(image).unsqueeze(0)
     output = model(pixel_values)
 
 
