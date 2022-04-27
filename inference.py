@@ -223,7 +223,7 @@ def main(args):
     # convert boxes from [0; 1] to image scales
     bboxes_scaled = rescale_bboxes(outputs['pred_boxes'][0, keep], image.size)
 
-
+    plot_results(image, probas[keep], bboxes_scaled)
 
 
 if __name__ == '__main__':
