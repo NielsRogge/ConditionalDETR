@@ -26,7 +26,7 @@ from typing import Tuple, Optional
 
 import torch
 from torch import Tensor
-from torch.nn.modules.linear import _LinearWithBias
+from torch.nn.modules.linear import NonDynamicallyQuantizableLinear
 from torch.nn.init import xavier_uniform_
 from torch.nn.init import constant_
 from torch.nn.init import xavier_normal_
@@ -90,7 +90,7 @@ class MultiheadAttention(Module):
         self.head_dim = embed_dim // num_heads
         assert self.head_dim * num_heads == self.embed_dim, "embed_dim must be divisible by num_heads"
 
-        self.out_proj = _LinearWithBias(vdim, vdim)
+        self.out_proj = NonDynamicallyQuantizableLinear(vdim, vdim)
 
         self.in_proj_bias = None
         self.in_proj_weight = None
