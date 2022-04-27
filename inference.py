@@ -26,6 +26,7 @@ from models import build_model
 
 
 def get_args_parser():
+    parser = argparse.ArgumentParser('Set transformer detector', add_help=False)
     # Model parameters
     parser.add_argument('--frozen_weights', type=str, default=None,
                         help="Path to the pretrained model. If set, only the mask head will be trained")
@@ -129,6 +130,10 @@ def main(args):
         else:
             checkpoint = torch.load(args.resume, map_location='cpu')
         model.load_state_dict(checkpoint['model'])
+
+    # forward pass
+    pixel_values = torch.randn(1,3,224,224)
+    output = model(pixel_values)
 
 
 if __name__ == '__main__':
